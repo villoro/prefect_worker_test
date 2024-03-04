@@ -3,10 +3,13 @@ prefect-version: 2.16.0
 
 pull:
 - prefect.deployments.steps.git_clone:
+    id: clone-step
     repository: https://github.com/villoro/prefect_worker_test.git
     branch: main
 - prefect.deployments.steps.pip_install_requirements:
     requirements_file: requirements.txt
+    directory: "{{ clone-step.directory }}"
+    stream_output: False
 
 definitions:
   work_pools:
