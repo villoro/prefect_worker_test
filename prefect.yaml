@@ -17,19 +17,21 @@ pull:
 - prefect.deployments.steps.git_clone:
     repository: git@github.com:villoro/prefect_worker_test.git
     branch: main
-    access_token: null
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-- name: null
-  version: null
-  tags: []
-  description: null
-  schedule: {}
-  flow_name: null
-  entrypoint: null
-  parameters: {}
-  work_pool:
-    name: null
-    work_queue_name: null
-    job_variables: {}
+  - name: buy-deploy
+    version: 0.1.0
+    tags: [buy]
+    description: Only prints
+    entrypoint: prefect_northius/buy.py:buy
+    work_pool:
+      name: subprocess-pool
+
+  - name: github-deploy
+    version: 0.1.0
+    tags: [github]
+    description: Only prints
+    entrypoint: prefect_northius/github.py:get_repo_info
+    work_pool:
+      name: subprocess-pool
