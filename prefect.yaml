@@ -7,10 +7,10 @@ name: prefect_worker_test
 prefect-version: 2.16.0
 
 # build section allows you to manage and build docker images
-build: null
+build:
 
 # push section allows you to manage if and how this project is uploaded to remote locations
-push: null
+push:
 
 # pull section allows you to provide instructions for cloning this project in remote locations
 pull:
@@ -19,20 +19,32 @@ pull:
     branch: main
     # access_token: "{{ prefect.blocks.secret.github-token }}"
 
-# the deployments section allows you to provide configuration for deploying flows
-deployments:
-  - name: buy-deploy
-    version: 0.1.0
-    tags: [buy]
-    description: Only prints
-    entrypoint: prefect_northius/buy.py:buy
-    work_pool:
+definitions:
+  work_pools:
+    subprocess-pool: &subprocess-pool
       name: subprocess-pool
 
-  - name: github-deploy
-    version: 0.1.0
-    tags: [github]
-    description: Only prints
-    entrypoint: prefect_northius/github.py:get_repo_info
-    work_pool:
-      name: subprocess-pool
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+- name: buy-deploy
+  version: 0.1.0
+  tags: [buy]
+  description: Only prints
+  schedule: {}
+  entrypoint: prefect_northius/buy.py:buy
+  work_pool: *subprocess-pool
+
+- name: github-deploy
+  version: 0.1.0
+  tags: [github]
+  description: Gets github info
+  schedule: {}
+  entrypoint: prefect_northius/github.py:get_repo_info
+  work_pool: *subprocess-pool
+
+- name: vpalette-deploy
+  version: 0.1.0
+  description: Gets the color hex based on a name and index
+  schedule: {}
+  entrypoint: prefect_northius/colors.py:get_color
+  work_pool: *subprocess-pool
