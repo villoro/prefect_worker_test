@@ -15,8 +15,9 @@ push: null
 # pull section allows you to provide instructions for cloning this project in remote locations
 pull:
 - prefect.deployments.steps.git_clone:
-    repository: git@github.com:villoro/prefect_worker_test.git
+    repository: https://github.com/villoro/prefect_worker_test.git
     branch: main
+    # access_token: "{{ prefect.blocks.secret.github-token }}"
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
